@@ -16,9 +16,9 @@ async function findAll() {
         });
 }
 
-function createEmploye(customer) {
+function createEmploye(employe) {
     return axios
-        .post(EMPLOYES_API, customer)
+        .post(EMPLOYES_API, employe)
         .then(async response => {
             const cachedEmployes = await Cache.get("employes");
             if (cachedEmployes) {
@@ -29,16 +29,16 @@ function createEmploye(customer) {
 }
 
 async function find(id) {
-    const cachedCustomer = await Cache.get("employes." + id);
-    if (cachedCustomer) return cachedCustomer;
+    const cachedemploye = await Cache.get("employes." + id);
+    if (cachedemploye) return cachedemploye;
 
     return axios
         .get(EMPLOYES_API + "/" + id)
         .then(response => {
-            const customer = response.data;
-            Cache.set("employes." + id, customer);
+            const employe = response.data;
+            Cache.set("employes." + id, employe);
 
-            return customer;
+            return employe;
         });
 }
 
@@ -54,19 +54,19 @@ function deleteEmploye(id) {
         });
 }
 
-function updateEmploye(id, customer) {
+function updateEmploye(id, employe) {
     return axios
-        .put(EMPLOYES_API + "/" + id, customer)
+        .put(EMPLOYES_API + "/" + id, employe)
         .then(async response => {
             const cachedEmployes = await Cache.get("employes");
-            const cachedCustomer = await Cache.get("employes." + id);
+            const cachedemploye = await Cache.get("employes." + id);
 
-            if (cachedCustomer) {
+            if (cachedemploye) {
                 Cache.set("employes." + id, response.data);
             }
 
             if (cachedEmployes) {
-                const index = cachedEmployes.findIndex(customer => customer.id === +id);
+                const index = cachedEmployes.findIndex(employe => employe.id === +id);
                 cachedEmployes[index] = response.data;
             }
             return response;
